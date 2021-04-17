@@ -9,10 +9,10 @@ const handler = async (event) => {
   }
 
   try {
-    const req = await faunadb.query(q.Map(q.Paginate(q.Match(q.Index("count")))))
+    // const req = await faunadb.query(q.Map(q.Paginate(q.Match(q.Index("count")))))
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: `Hello ${subject}` }),
+      body: JSON.stringify({ message: `Helloooo you` }),
       // // more keys you can return:
       // headers: { "headerName": "headerValue", ... },
       // isBase64Encoded: true,
