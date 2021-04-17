@@ -10,14 +10,14 @@ function App() {
 
   const getCount = async () => {
     const resp = await fetch('/api/getCount');
-    const data = await resp.json();
-    console.log(data);
-    setHighScore(data[0].data.high_score);
+    const players = await resp.json();
+    console.log(players);
+    setHighScore(players.filter(player => player.data.email === 'test@tester.com')[0].data.high_score);
   }
 
   useEffect(() => {
     getCount();
-  })
+  }, [])
 
   return (
     <div>
