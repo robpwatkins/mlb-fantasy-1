@@ -7,9 +7,9 @@ const handler = async (event) => {
   if (event.httpMethod !== 'GET') {
     return { statusCode: 500, body: 'GET OUTTA HERE!' }
   }
-  
+
   try {
-    const subject = event.queryStringParameters.name || 'World'
+    const req = await faunadb.query(q.Map(q.Paginate(q.Match(q.Index("count")))))
     return {
       statusCode: 200,
       body: JSON.stringify({ message: `Hello ${subject}` }),
