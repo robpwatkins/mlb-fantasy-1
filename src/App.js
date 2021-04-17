@@ -11,7 +11,6 @@ function App() {
   const getCount = async () => {
     const resp = await fetch('/api/getCount');
     const data = await resp.json();
-    console.log(data[0].data.count);
     setHighScore(data[0].data.count);
   }
 
@@ -23,7 +22,7 @@ function App() {
     <div>
       <p>High score: {highScore}</p>
       <span>{count}</span>
-      <button onClick={() => setCount(count + 1)}>+</button>
+      <button className="incrementer" onClick={() => setCount(count + 1)}>+</button>
       <br/>
       <LoginButton />
       <LogoutButton />
