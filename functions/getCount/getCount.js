@@ -4,8 +4,11 @@ const faunadb = require('faunadb')
 const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET })
 
 const handler = async (event) => {
+  if (event.httpMethod !== 'GET') {
+    return { statusCode: 500, body: 'GET OUTTA HERE!' }
+  }
+  
   try {
-    console.log('heyoo');
     const subject = event.queryStringParameters.name || 'World'
     return {
       statusCode: 200,
