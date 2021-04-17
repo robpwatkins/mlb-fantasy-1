@@ -11,7 +11,7 @@ const handler = async (event) => {
   }
 
   try {
-    const req = await faunadb.query(
+    const req = await faunaClient.query(
       q.Map(
         q.Paginate(
           q.Match(
