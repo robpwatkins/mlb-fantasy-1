@@ -5,25 +5,24 @@ import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState();
 
-  const getCount = async () => {
-    const resp = await fetch('/api/getCount');
+  const getHighScore = async () => {
+    const resp = await fetch('/api/getPlayers');
     const players = await resp.json();
-    console.log(players);
-    setHighScore(players.filter(player => player.data.email === 'test@tester.com')[0].data.high_score);
+    setHighScore(players.find(player => player.data.email === 'test@tester.com').data.high_score);
   }
 
   useEffect(() => {
-    getCount();
+    getHighScore();
   }, [])
 
   return (
     <div>
       <p>High score: {highScore}</p>
-      <span>{count}</span>
-      <button className="incrementer" onClick={() => setCount(count + 1)}>+</button>
+      <span>{currentScore}</span>
+      <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
       <LoginButton />
       <LogoutButton />
