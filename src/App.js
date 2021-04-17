@@ -7,22 +7,42 @@ import Profile from './components/Profile';
 function App() {
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState();
+  const [playerObj, setPlayerObj] = useState({});
+  const [currentPlayer, setCurrentPlayer] = useState({})
 
-  const getHighScore = async () => {
+  const getCurrentPlayer = async () => {
     const resp = await fetch('/api/getPlayers');
     const players = await resp.json();
-    setHighScore(players.find(player => player.data.email === 'test@tester.com').data.high_score);
+    let currentPlayer = players.find(player => player.data.email === 'test@tester.com');
+    setPlayerObj(currentPlayer);
+    setCurrentPlayer(currentPlayer.data);
+  }
+
+  const updateHighScore = async () => {
+    console.log(playerObj);
+    fetch('/api/updatePlayer', {
+      method: 'PATCH'/* ,
+      body: JSON.stringify({
+        playerObj, data: 
+          { high_score: 1000 }
+      }) */
+    })
+  }
+
+  const handleClick = () => {
+    setCurrentScore(currentScore + 1);
+    updateHighScore()
   }
 
   useEffect(() => {
-    getHighScore();
+    getCurrentPlayer();
   }, [])
 
   return (
     <div>
-      <p>High score: {highScore}</p>
+      <p>High score: {currentPlayer.high_score}</p>
       <span>{currentScore}</span>
-      <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
+      <button className="incrementer" onClick={handleClick}>+</button>
       <br/>
       <LoginButton />
       <LogoutButton />
