@@ -11,7 +11,8 @@ function App() {
   const getCount = async () => {
     const resp = await fetch('/api/getCount');
     const data = await resp.json();
-    setHighScore(data[0].data.count);
+    console.log(data);
+    setHighScore(data[0].data.high_score);
   }
 
   useEffect(() => {
