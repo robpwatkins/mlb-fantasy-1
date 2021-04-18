@@ -16,16 +16,16 @@ function App() {
     let currentPlayer = players.find(player => player.data.email === 'test@tester.com');
     setPlayerObj(currentPlayer);
     setCurrentPlayer(currentPlayer.data);
+    setHighScore(25);
   }
 
   const updateHighScore = async () => {
     console.log(playerObj);
     fetch('/api/updatePlayer', {
-      method: 'PATCH'/* ,
+      method: 'PATCH',
       body: JSON.stringify({
-        playerObj, data: 
-          { high_score: 1000 }
-      }) */
+        playerObj, highScore
+      })
     })
   }
 

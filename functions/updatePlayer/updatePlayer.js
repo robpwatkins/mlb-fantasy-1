@@ -6,21 +6,17 @@ const q = faunadb.query
 
 const handler = async (event) => {
   try {
-    const { playerToUpdate, newData } = JSON.parse(event.body);
-    const playerId = playerToUpdate.ref['@ref'].id;
-    const req = await faunaClient.query(
+    const { playerObj, highScore } = JSON.parse(event.body);
+    const playerId = playerObj.ref['@ref'].id;
+    faunaClient.query(
       q.Update(
-        q.Ref(`classes/players/${playerId}`), { data }
+        q.Ref(q.Collection('players'), playerId),
+          { data: { high_score: highScore } }
       )
     )
-    // return {
-    //   statusCode: 200,
-    //   body: JSON.stringify({ message: `Hello ${subject}` }),
-      // // more keys you can return:
-      // headers: { "headerName": "headerValue", ... },
-      // isBase64Encoded: true,
-    }
+    return { statusCode: 200 };
   } catch (error) {
+    console.log(error);
     return { statusCode: 500, body: error.toString() }
   }
 }
