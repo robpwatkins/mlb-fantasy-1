@@ -6,12 +6,12 @@ const q = faunadb.query
 
 const handler = async (event) => {
   try {
-    const { currentPlayer, highScore } = JSON.parse(event.body);
+    const { currentPlayer, newScore } = JSON.parse(event.body);
     const playerId = currentPlayer.ref['@ref'].id;
     faunaClient.query(
       q.Update(
         q.Ref(q.Collection('players'), playerId),
-          { data: { high_score: highScore } }
+          { data: { high_score: newScore } }
       )
     )
     return { statusCode: 200 };

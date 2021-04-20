@@ -17,12 +17,12 @@ function App() {
     setHighScore(player.data.high_score);
   }
 
-  const updateHighScore = async () => {
+  const updateHighScore = async (newScore) => {
     console.log(currentPlayer);
     fetch('/api/updatePlayer', {
       method: 'PATCH',
       body: JSON.stringify({
-        currentPlayer, highScore
+        currentPlayer, newScore
       })
     })
   }
@@ -36,10 +36,13 @@ function App() {
   }, [])
 
   useEffect(() => {
+    console.log(currentScore, highScore);
     if (currentScore > highScore) {
+      // let newScore = currentScore;
+      updateHighScore(currentScore);
       setHighScore(currentScore);
     }
-  })
+  }, [currentScore])
 
   return (
     <div>
