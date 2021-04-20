@@ -8,7 +8,7 @@ function App() {
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState();
   const [playerObj, setPlayerObj] = useState({});
-  const [currentPlayer, setCurrentPlayer] = useState({})
+  const [currentPlayer, setCurrentPlayer] = useState({});
 
   const getCurrentPlayer = async () => {
     const resp = await fetch('/api/getPlayers');
@@ -40,7 +40,7 @@ function App() {
 
   return (
     <div>
-      <p>High score: {currentPlayer.high_score}</p>
+      <p>High score: {playerObj.data.high_score}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={handleClick}>+</button>
       <br/>
