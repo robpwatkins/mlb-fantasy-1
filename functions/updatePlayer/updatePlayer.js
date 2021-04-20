@@ -6,8 +6,8 @@ const q = faunadb.query
 
 const handler = async (event) => {
   try {
-    const { playerObj, highScore } = JSON.parse(event.body);
-    const playerId = playerObj.ref['@ref'].id;
+    const { currentPlayer, highScore } = JSON.parse(event.body);
+    const playerId = currentPlayer.ref['@ref'].id;
     faunaClient.query(
       q.Update(
         q.Ref(q.Collection('players'), playerId),
