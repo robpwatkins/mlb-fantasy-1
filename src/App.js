@@ -14,7 +14,7 @@ function App() {
     const resp = await fetch('/api/getPlayers');
     const players = await resp.json();
     let currentPlayer = players.find(player => player.data.email === 'test@tester.com');
-    // setPlayerObj(currentPlayer);
+    setPlayerObj(currentPlayer);
     // setCurrentPlayer(currentPlayer.data);
     setHighScore(25);
   }
@@ -41,8 +41,7 @@ function App() {
   console.log(playerObj && true);
   return (
     <div>
-      <p>High score: {currentPlayer.high_score}</p>
-      {/* <p>High score: {playerObj.data.email}</p> */}
+      <p>High score: {playerObj.data && playerObj.data.high_score}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={handleClick}>+</button>
       <br/>
