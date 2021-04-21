@@ -13,8 +13,9 @@ const handler = async (event) => {
     const req = await faunaClient.query(
       q.Map(
         q.Paginate(
-          q.Match(
-            q.Index("all_players"))), q.Lambda("X", q.Get(q.Var("X")))))
+          q.Match(q.Index("players_by_email"), "test@tester.com")
+          ),
+          q.Lambda("X", q.Get(q.Var("X")))))
             console.log(JSON.stringify(req.data));
     return { statusCode: 200, body: JSON.stringify(req.data) }
   } catch (error) {

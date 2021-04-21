@@ -11,8 +11,8 @@ function App() {
 
   const getCurrentPlayer = async () => {
     const resp = await fetch('/api/getPlayers');
-    const players = await resp.json();
-    let player = players.find(player => player.data.email === 'test@tester.com');
+    const [player] = await resp.json();
+    console.log(player.data.high_score);
     setCurrentPlayer(player);
     setHighScore(player.data.high_score);
   }
@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div>
-      <p>High score: {currentPlayer.data && currentPlayer.data.email}</p>
+      <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={handleClick}>+</button>
       <br/>
