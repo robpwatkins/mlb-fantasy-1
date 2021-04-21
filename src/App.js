@@ -9,7 +9,6 @@ function App() {
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState();
   const [currentPlayer, setCurrentPlayer] = useState({});
-  const [playerEmail, setPlayerEmail] = useState('');
   const { user, isAuthenticated } = useAuth0();
 
   const getCurrentPlayer = async email => {
@@ -33,11 +32,7 @@ function App() {
         })
       })
     }
-    
-    const handleClick = () => {
-      setCurrentScore(currentScore + 1);
-    }
-    
+
     useEffect(() => {
       if (isAuthenticated) {
         getCurrentPlayer(user.email);
@@ -45,21 +40,17 @@ function App() {
     }, [isAuthenticated])
     
     useEffect(() => {
-      console.log(currentScore, highScore);
       if (currentScore > highScore) {
-        // let newScore = currentScore;
         updateHighScore(currentScore);
         setHighScore(currentScore);
       }
-    }, [currentScore, isAuthenticated])
+    }, [currentScore])
 
-    // useEffect(() => {
-    // }, [isAuthenticated])
   return (
     <div>
       <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
       <span>{currentScore}</span>
-      <button className="incrementer" onClick={handleClick}>+</button>
+      <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
       <LoginButton />
       <LogoutButton />
