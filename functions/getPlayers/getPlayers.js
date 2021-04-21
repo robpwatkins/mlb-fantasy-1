@@ -5,15 +5,16 @@ const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECR
 const q = faunadb.query
 
 const handler = async (event) => {
-  if (event.httpMethod !== 'GET') {
+  if (event.httpMethod !== 'POST') {
     return { statusCode: 500, body: 'GET OUTTA HERE!' }
   }
 
   try {
+    const { email } = JSON.parse(event.body);
     const req = await faunaClient.query(
       q.Map(
         q.Paginate(
-          q.Match(q.Index("players_by_email"), "test@tester.com")
+          q.Match(q.Index("players_by_email"), email)
           ),
           q.Lambda("X", q.Get(q.Var("X")))))
             console.log(JSON.stringify(req.data));

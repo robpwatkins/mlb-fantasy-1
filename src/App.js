@@ -9,14 +9,15 @@ function App() {
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState();
   const [currentPlayer, setCurrentPlayer] = useState({});
+  const [playerEmail, setPlayerEmail] = useState('');
   const { user, isAuthenticated } = useAuth0();
 
-  const getCurrentPlayer = async () => {
+  const getCurrentPlayer = async email => {
     const resp = await fetch('/api/getPlayers', {
-      // method: 'GET',
-      // body: JSON.stringify({
-        //   // email: 
-        // })
+      method: 'POST',
+      body: JSON.stringify({
+          email
+        })
       });
       const [player] = await resp.json();
       setCurrentPlayer(player);
@@ -38,8 +39,10 @@ function App() {
     }
     
     useEffect(() => {
-      getCurrentPlayer();
-    }, [])
+      if (isAuthenticated) {
+        getCurrentPlayer(user.email);
+      }
+    }, [isAuthenticated])
     
     useEffect(() => {
       console.log(currentScore, highScore);
@@ -48,12 +51,10 @@ function App() {
         updateHighScore(currentScore);
         setHighScore(currentScore);
       }
-    }, [currentScore])
+    }, [currentScore, isAuthenticated])
 
-    useEffect(() => {
-      isAuthenticated && console.log(user.email);
-    }, [isAuthenticated])
-    
+    // useEffect(() => {
+    // }, [isAuthenticated])
   return (
     <div>
       <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
