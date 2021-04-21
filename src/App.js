@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div>
-      <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
+      <p>High score: {currentPlayer.data && currentPlayer.data.email}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={handleClick}>+</button>
       <br/>
