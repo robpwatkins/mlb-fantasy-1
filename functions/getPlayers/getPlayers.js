@@ -5,10 +5,6 @@ const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECR
 const q = faunadb.query
 
 const handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 500, body: 'GET OUTTA HERE!' }
-  }
-
   try {
     const { email } = JSON.parse(event.body);
     const req = await faunaClient.query(
