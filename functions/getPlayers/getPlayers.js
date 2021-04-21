@@ -14,7 +14,7 @@ const handler = async (event) => {
       q.Map(
         q.Paginate(
           q.Match(
-            q.Index("all_players_by_email"), "test@tester.com")), q.Lambda("attr", q.Get(q.Var("attr")))))
+            q.Index("all_players"))), q.Lambda("X", q.Get(q.Var("X")))))
             console.log(JSON.stringify(req.data));
     return { statusCode: 200, body: JSON.stringify(req.data) }
   } catch (error) {
