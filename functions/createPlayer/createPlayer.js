@@ -6,19 +6,19 @@ const q = faunadb.query
 
 const handler = async (event) => {
   try {
-    const { email, newScore } = JSON.stringify(event.body);
+    const { email, newScore } = JSON.parse(event.body);
     console.log(email, newScore);
-    // faunaClient.query(
-    //   q.Create(
-    //     q.Collection("players"),
-    //     {
-    //       data: {
-    //         email: email,
-    //         high_score: newScore
-    //       }
-    //     }
-    //   )
-    // )
+    faunaClient.query(
+      q.Create(
+        q.Collection("players"),
+        {
+          data: {
+            email: email,
+            high_score: newScore
+          }
+        }
+      )
+    )
     return {
       statusCode: 200,
       body: JSON.stringify({ message: `Hello ${subject}` }),
