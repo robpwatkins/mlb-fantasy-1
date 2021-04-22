@@ -36,8 +36,8 @@ function App() {
       fetch('/api/createPlayer', {
         method: 'POST',
         body: JSON.stringify({
-          email: "test1@tester.com",
-          newScore: 0
+          email: "test4@tester.com",
+          newScore: 123
         })
       })
     }
