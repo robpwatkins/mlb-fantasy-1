@@ -7,8 +7,7 @@ const q = faunadb.query
 const handler = async (event) => {
   try {
     const { email, newScore } = JSON.parse(event.body);
-    console.log(email, newScore);
-    faunaClient.query(
+    const req = await faunaClient.query(
       q.Create(
         q.Collection("players"),
         {
@@ -19,9 +18,10 @@ const handler = async (event) => {
         }
       )
     )
+    console.log('heyoo', req);
     return {
       statusCode: 200,
-      body: JSON.stringify(req.data),
+      body: JSON.stringify(req),
     }
   } catch (error) {
     return { statusCode: 500, body: error.toString() }
