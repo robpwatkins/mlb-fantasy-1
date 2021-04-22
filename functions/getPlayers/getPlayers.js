@@ -13,7 +13,6 @@ const handler = async (event) => {
           q.Match(q.Index("players_by_email"), email)
           ),
           q.Lambda("X", q.Get(q.Var("X")))))
-            console.log(JSON.stringify(req.data));
     return { statusCode: 200, body: JSON.stringify(req.data) }
   } catch (error) {
     return { statusCode: 500, body: JSON.stringify({ error: error.message }) }

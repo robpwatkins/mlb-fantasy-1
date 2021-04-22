@@ -24,11 +24,20 @@ function App() {
     }
     
     const updateHighScore = async (newScore) => {
-      console.log(currentPlayer);
       fetch('/api/updatePlayer', {
         method: 'PATCH',
         body: JSON.stringify({
           currentPlayer, newScore
+        })
+      })
+    }
+
+    const handleCreate = async () => {
+      fetch('/api/createPlayer', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: "test1@tester.com",
+          newScore: 0
         })
       })
     }
@@ -51,6 +60,8 @@ function App() {
       <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
+      <br/>
+      <button onClick={handleCreate}>TEst Create!</button>
       <br/>
       <LoginButton />
       <LogoutButton />
