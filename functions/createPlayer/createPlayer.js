@@ -13,15 +13,15 @@ const handler = async (event) => {
         q.Collection("players"),
         {
           data: {
-            email: email,
-            high_score: newScore
+            email,
+            high_score: 0
           }
         }
       )
     )
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: `Hello ${subject}` }),
+      body: JSON.stringify(req.data),
     }
   } catch (error) {
     return { statusCode: 500, body: error.toString() }

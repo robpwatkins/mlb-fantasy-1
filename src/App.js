@@ -11,16 +11,24 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState({});
   const { user, isAuthenticated } = useAuth0();
 
-  const getCurrentPlayer = async email => {
+  const getOrCreatePlayer = async email => {
     const resp = await fetch('/api/getPlayers', {
       method: 'POST',
       body: JSON.stringify({
-          email
+          email: "notanemail@nope.com"
         })
       });
       const [player] = await resp.json();
-      setCurrentPlayer(player);
-      setHighScore(player.data.high_score);
+      if (!player) {
+        fetch('/api/createPlayer', {
+          method: 'POST',
+          body: JSON.stringify({
+            email
+          })
+        })
+      }
+      // setCurrentPlayer(player);
+      // setHighScore(player.data.high_score);
     }
     
     const updateHighScore = async (newScore) => {
@@ -32,19 +40,12 @@ function App() {
       })
     }
 
-    const handleCreate = async () => {
-      fetch('/api/createPlayer', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: "test4@tester.com",
-          newScore: 123
-        })
-      })
-    }
+    // const createPlayer = async email => {
+    // }
 
     useEffect(() => {
       if (isAuthenticated) {
-        getCurrentPlayer(user.email);
+        getOrCreatePlayer(user.email);
       }
     }, [isAuthenticated])
     
@@ -61,7 +62,7 @@ function App() {
       <span>{currentScore}</span>
       <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
-      <button onClick={handleCreate}>TEst Create!</button>
+      <button onClick={getOrCreatePlayer}>TEst Create!</button>
       <br/>
       <LoginButton />
       <LogoutButton />
