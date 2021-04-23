@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 export default function Leaderboard() {
   const [allPlayers, setAllPlayers] = useState([]);
   const [topFive, setTopFive] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
   const getAllPlayers = async () => {
     const resp = await fetch('/api/getPlayers');
@@ -17,11 +18,12 @@ export default function Leaderboard() {
   }, [])
 
   return (
-    <div>
+    <>
       <h3>Leaderboard:</h3>
-      {topFive.length && topFive.map((player, idx) => {
-        return <p key={idx}>{player.nickname}: {player.high_score}</p>
-      })}
-    </div>
+      {!showAll 
+        ? topFive.map((player, idx) => <p key={idx}>{player.nickname}: {player.high_score}</p>) 
+        : allPlayers.map((player, idx) => <p key={idx}>{player.nickname}: {player.high_score}</p>)}
+      <button onClick={() => setShowAll(!showAll)}>{!showAll ? 'See All' : 'See Less'}</button>
+    </>
   )
 }
