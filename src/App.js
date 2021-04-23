@@ -51,9 +51,10 @@ export default function App() {
       <hr/>
       {isAuthenticated &&
         <p>{currentScore <= highScore 
-        ? `Personal best: ${currentPlayer.data && currentPlayer.data.high_score}` : 'New personal best!'}</p>}
+          ? `Personal best: ${currentPlayer.data && currentPlayer.data.high_score}` 
+          : 'New personal best!'}</p>}
       <span>{currentScore}</span>
-      <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
+      <button onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
       <Profile />
       {!isAuthenticated 

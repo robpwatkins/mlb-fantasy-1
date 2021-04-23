@@ -6,10 +6,10 @@ export default function Profile() {
 
   return (
     isAuthenticated && (
-      <div>
+      <>
         <img src={user.picture} alt={user.name}/>
         <h3>{user.nickname}</h3>
-      </div>
+      </>
     )
   );
 }
