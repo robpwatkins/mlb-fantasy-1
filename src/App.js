@@ -14,8 +14,9 @@ function App() {
 
   const getAllPlayers = async () => {
     const resp = await fetch('/api/getPlayers');
-    const players = await resp.json();
-    return players;
+    const playersArr = await resp.json();
+    const players = playersArr.map(player => player.data);
+    setPlayers(players);
   }
 
   const createNewPlayer = async email => {
@@ -71,6 +72,7 @@ function App() {
       }
     }, [currentScore])
 
+  console.log(players);
   return (
     <div>
       <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
