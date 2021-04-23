@@ -82,13 +82,13 @@ function App() {
         })}
       </div>
       <hr/>
-      <p>Your high score: {currentPlayer.data && currentPlayer.data.high_score}</p>
+      <p>Personal best: {currentPlayer.data && currentPlayer.data.high_score}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
-      <LoginButton />
-      <LogoutButton />
       <Profile />
+      {!isAuthenticated && <LoginButton />}
+      <LogoutButton />
     </div>
   );
 }

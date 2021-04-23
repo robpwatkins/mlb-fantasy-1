@@ -8,9 +8,7 @@ export default function Profile() {
     isAuthenticated && (
       <div>
         <img src={user.picture} alt={user.name}/>
-        <h2>{user.name}</h2>
         <h3>{user.nickname}</h3>
-        {/* {JSON.stringify(user, null, 2)} */}
       </div>
     )
   );
