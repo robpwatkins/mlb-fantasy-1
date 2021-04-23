@@ -6,7 +6,7 @@ import Profile from './components/Profile';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
 
-function App() {
+export default function App() {
   const [currentPlayer, setCurrentPlayer] = useState({});
   const [highScore, setHighScore] = useState();
   const [currentScore, setCurrentScore] = useState(0);
@@ -62,5 +62,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
