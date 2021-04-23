@@ -11,6 +11,18 @@ function App() {
   const [currentPlayer, setCurrentPlayer] = useState({});
   const { user, isAuthenticated } = useAuth0();
 
+  const createNewPlayer = async email => {
+    const resp = await fetch('/api/createPlayer', {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+      })
+    })
+    const player = await resp.json();
+    setCurrentPlayer(player);
+    setHighScore(player.data.high_score);
+  }
+
   const getCurrentPlayer = async email => {
     const resp = await fetch('/api/getPlayers', {
       method: 'POST',
@@ -20,14 +32,14 @@ function App() {
       });
       const [player] = await resp.json();
       if (!player) {
-        createPlayer(email);
+        return createNewPlayer(email);
       }
       setCurrentPlayer(player);
       setHighScore(player.data.high_score);
     }
     
     const updateHighScore = async (newScore) => {
-      fetch('/api/updatePlayer', {
+      fetch('/api/updatePlayers', {
         method: 'PATCH',
         body: JSON.stringify({
           currentPlayer, newScore
@@ -35,22 +47,11 @@ function App() {
       })
     }
 
-    const createPlayer = async email => {
-      const resp = await fetch('/api/createPlayer', {
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-        })
-      })
-      const player = await resp.json();
-      setCurrentPlayer(player);
-      setHighScore(player.data.high_score);
-    }
 
     useEffect(() => {
-      // if (isAuthenticated) {
-        getCurrentPlayer("notanemail2@nope.com"/* user.email */);
-      // }
+      if (isAuthenticated) {
+        getCurrentPlayer(user.email);
+      }
     }, [isAuthenticated])
     
     useEffect(() => {
@@ -60,13 +61,14 @@ function App() {
       }
     }, [currentScore])
 
+  console.log(currentPlayer);
   return (
     <div>
       <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
-      {/* <button onClick={createPlayer}>TEst Create!</button> */}
+      {/* <button onClick={createNewPlayer}>TEst Create!</button> */}
       <br/>
       <LoginButton />
       <LogoutButton />
