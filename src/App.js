@@ -17,15 +17,14 @@ function App() {
     const playersArr = await resp.json();
     const players = playersArr.map(player => player.data);
     players.sort((a, b) => (a.high_score < b.high_score) ? 1 : -1);
-    console.log(players);
     setPlayers(players);
   }
 
-  const createNewPlayer = async email => {
+  const createNewPlayer = async nickname => {
     const resp = await fetch('/api/createPlayer', {
       method: 'POST',
       body: JSON.stringify({
-        email,
+        nickname,
       })
     })
     const player = await resp.json();
@@ -33,16 +32,16 @@ function App() {
     setHighScore(player.data.high_score);
   }
 
-  const getCurrentPlayer = async email => {
+  const getCurrentPlayer = async nickname => {
     const resp = await fetch('/api/getPlayer', {
       method: 'POST',
       body: JSON.stringify({
-          email
+          nickname
         })
       });
       const [player] = await resp.json();
       if (!player) {
-        return createNewPlayer(email);
+        return createNewPlayer(nickname);
       }
       setCurrentPlayer(player);
       setHighScore(player.data.high_score);
@@ -63,7 +62,7 @@ function App() {
 
     useEffect(() => {
       if (isAuthenticated) {
-        getCurrentPlayer(user.email);
+        getCurrentPlayer(user.nickname);
       }
     }, [isAuthenticated])
     
@@ -79,15 +78,13 @@ function App() {
       <div>
         <h3>Leaderboard:</h3>
         {players.length && players.map((player, idx) => {
-          return <p key={idx}>{player.email}: {player.high_score}</p>
+          return <p key={idx}>{player.nickname}: {player.high_score}</p>
         })}
       </div>
       <hr/>
       <p>Your high score: {currentPlayer.data && currentPlayer.data.high_score}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
-      <br/>
-      {/* <button onClick={createNewPlayer}>TEst Create!</button> */}
       <br/>
       <LoginButton />
       <LogoutButton />

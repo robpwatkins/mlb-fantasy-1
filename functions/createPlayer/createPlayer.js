@@ -6,13 +6,13 @@ const q = faunadb.query
 
 const handler = async (event) => {
   try {
-    const { email, newScore } = JSON.parse(event.body);
+    const { nickname, newScore } = JSON.parse(event.body);
     const req = await faunaClient.query(
       q.Create(
         q.Collection("players"),
         {
           data: {
-            email,
+            nickname,
             high_score: 0
           }
         }
