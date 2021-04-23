@@ -6,10 +6,17 @@ import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
 
 function App() {
+  const [players, setPlayers] = useState({});
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState();
   const [currentPlayer, setCurrentPlayer] = useState({});
   const { user, isAuthenticated } = useAuth0();
+
+  const getAllPlayers = async () => {
+    const resp = await fetch('/api/getPlayers');
+    const players = await resp.json();
+    return players;
+  }
 
   const createNewPlayer = async email => {
     const resp = await fetch('/api/createPlayer', {
@@ -24,7 +31,7 @@ function App() {
   }
 
   const getCurrentPlayer = async email => {
-    const resp = await fetch('/api/getPlayers', {
+    const resp = await fetch('/api/getPlayer', {
       method: 'POST',
       body: JSON.stringify({
           email
@@ -47,6 +54,9 @@ function App() {
       })
     }
 
+    useEffect(() => {
+      getAllPlayers();
+    }, [])
 
     useEffect(() => {
       if (isAuthenticated) {
@@ -61,7 +71,6 @@ function App() {
       }
     }, [currentScore])
 
-  console.log(currentPlayer);
   return (
     <div>
       <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
