@@ -44,13 +44,6 @@ function App() {
         getCurrentPlayer(user.nickname);
       }
     }, [isAuthenticated])
-    
-    // useEffect(() => {
-    //   if (currentScore > highScore) {
-    //     updateHighScore(currentScore);
-    //     setHighScore(currentScore);
-    //   }
-    // }, [currentScore])
 
   return (
     <div>
