@@ -23,7 +23,7 @@ export default function Leaderboard() {
       {!showAll 
         ? topFive.map((player, idx) => <p key={idx}>{player.nickname}: {player.high_score}</p>) 
         : allPlayers.map((player, idx) => <p key={idx}>{player.nickname}: {player.high_score}</p>)}
-      <button onClick={() => setShowAll(!showAll)}>{!showAll ? 'See All' : 'See Less'}</button>
+      <u onClick={() => setShowAll(!showAll)}>{!showAll ? 'see all' : 'see less'}</u>
     </>
   )
 }

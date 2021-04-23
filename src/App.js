@@ -39,41 +39,33 @@ function App() {
       setHighScore(player.data.high_score);
     }
     
-    const updateHighScore = async (newScore) => {
-      fetch('/api/updatePlayers', {
-        method: 'PATCH',
-        body: JSON.stringify({
-          currentPlayer, newScore
-        })
-      })
-    }
-    
     useEffect(() => {
       if (isAuthenticated) {
         getCurrentPlayer(user.nickname);
       }
-      // getAllPlayers();
-      console.log('heyoo');
     }, [isAuthenticated])
     
-    useEffect(() => {
-      if (currentScore > highScore) {
-        updateHighScore(currentScore);
-        setHighScore(currentScore);
-      }
-    }, [currentScore])
+    // useEffect(() => {
+    //   if (currentScore > highScore) {
+    //     updateHighScore(currentScore);
+    //     setHighScore(currentScore);
+    //   }
+    // }, [currentScore])
 
   return (
     <div>
       <Leaderboard />
       <hr/>
-      <p>Personal best: {currentPlayer.data && currentPlayer.data.high_score}</p>
+      {isAuthenticated &&
+        <p>{currentScore <= highScore 
+        ? `Personal best: ${currentPlayer.data && currentPlayer.data.high_score}` : 'New personal best!'}</p>}
       <span>{currentScore}</span>
       <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
       <Profile />
-      {!isAuthenticated && <LoginButton />}
-      <LogoutButton />
+      {!isAuthenticated 
+        ? <LoginButton /> 
+        : <LogoutButton currentPlayer={currentPlayer} newScore={currentScore} />}
     </div>
   );
 }
