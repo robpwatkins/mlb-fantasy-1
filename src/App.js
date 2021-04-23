@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { useAuth0 } from '@auth0/auth0-react';
+import Leaderboard from './components/Leaderboard';
+import Profile from './components/Profile';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
-import Profile from './components/Profile';
-import Leaderboard from './components/Leaderboard';
 
 function App() {
-  const [players, setPlayers] = useState({});
   const [currentPlayer, setCurrentPlayer] = useState({});
   const [highScore, setHighScore] = useState();
   const [currentScore, setCurrentScore] = useState(0);
@@ -48,9 +47,6 @@ function App() {
         })
       })
     }
-
-    // useEffect(() => {
-    // }, [])
     
     useEffect(() => {
       if (isAuthenticated) {

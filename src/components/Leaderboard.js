@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Leaderboard() {
-  const [players, setPlayers] = useState([]);
+  const [allPlayers, setAllPlayers] = useState([]);
+  const [topFive, setTopFive] = useState([]);
 
   const getAllPlayers = async () => {
     const resp = await fetch('/api/getPlayers');
     const playersArr = await resp.json();
-    const players = playersArr.map(player => player.data).sort((a, b) => (a.high_score < b.high_score) ? 1 : -1);
-    setPlayers(players);
+    const allPlayers = playersArr.map(player => player.data).sort((a, b) => (a.high_score < b.high_score) ? 1 : -1);
+    setAllPlayers(allPlayers);
+    setTopFive(allPlayers.filter((_, idx) => idx <= 4));
   }
 
   useEffect(() => {
@@ -17,7 +19,7 @@ export default function Leaderboard() {
   return (
     <div>
       <h3>Leaderboard:</h3>
-      {players.length && players.map((player, idx) => {
+      {topFive.length && topFive.map((player, idx) => {
         return <p key={idx}>{player.nickname}: {player.high_score}</p>
       })}
     </div>
