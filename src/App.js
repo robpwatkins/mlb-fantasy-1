@@ -72,10 +72,16 @@ function App() {
       }
     }, [currentScore])
 
-  console.log(players);
   return (
     <div>
-      <p>High score: {currentPlayer.data && currentPlayer.data.high_score}</p>
+      <div>
+        <h3>Leaderboard:</h3>
+        {players.length && players.map(player => {
+          return <p>{player.email}: {player.high_score}</p>
+        })}
+      </div>
+      <hr/>
+      <p>Your high score: {currentPlayer.data && currentPlayer.data.high_score}</p>
       <span>{currentScore}</span>
       <button className="incrementer" onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
