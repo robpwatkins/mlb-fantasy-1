@@ -16,6 +16,8 @@ function App() {
     const resp = await fetch('/api/getPlayers');
     const playersArr = await resp.json();
     const players = playersArr.map(player => player.data);
+    players.sort((a, b) => (a.high_score < b.high_score) ? 1 : -1);
+    console.log(players);
     setPlayers(players);
   }
 
@@ -76,8 +78,8 @@ function App() {
     <div>
       <div>
         <h3>Leaderboard:</h3>
-        {players.length && players.map(player => {
-          return <p>{player.email}: {player.high_score}</p>
+        {players.length && players.map((player, idx) => {
+          return <p key={idx}>{player.email}: {player.high_score}</p>
         })}
       </div>
       <hr/>
