@@ -4,21 +4,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
+import Leaderboard from './components/Leaderboard';
 
 function App() {
   const [players, setPlayers] = useState({});
-  const [currentScore, setCurrentScore] = useState(0);
-  const [highScore, setHighScore] = useState();
   const [currentPlayer, setCurrentPlayer] = useState({});
+  const [highScore, setHighScore] = useState();
+  const [currentScore, setCurrentScore] = useState(0);
   const { user, isAuthenticated } = useAuth0();
-
-  const getAllPlayers = async () => {
-    const resp = await fetch('/api/getPlayers');
-    const playersArr = await resp.json();
-    const players = playersArr.map(player => player.data);
-    players.sort((a, b) => (a.high_score < b.high_score) ? 1 : -1);
-    setPlayers(players);
-  }
 
   const createNewPlayer = async nickname => {
     const resp = await fetch('/api/createPlayer', {
@@ -56,14 +49,15 @@ function App() {
       })
     }
 
-    useEffect(() => {
-      getAllPlayers();
-    }, [])
-
+    // useEffect(() => {
+    // }, [])
+    
     useEffect(() => {
       if (isAuthenticated) {
         getCurrentPlayer(user.nickname);
       }
+      // getAllPlayers();
+      console.log('heyoo');
     }, [isAuthenticated])
     
     useEffect(() => {
@@ -75,12 +69,7 @@ function App() {
 
   return (
     <div>
-      <div>
-        <h3>Leaderboard:</h3>
-        {players.length && players.map((player, idx) => {
-          return <p key={idx}>{player.nickname}: {player.high_score}</p>
-        })}
-      </div>
+      <Leaderboard />
       <hr/>
       <p>Personal best: {currentPlayer.data && currentPlayer.data.high_score}</p>
       <span>{currentScore}</span>
