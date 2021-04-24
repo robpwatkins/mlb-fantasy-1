@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import './App.css';
 import Leaderboard from './components/Leaderboard';
@@ -24,7 +24,7 @@ export default function App() {
     setHighScore(player.data.high_score);
   }
 
-  const getCurrentPlayer = async nickname => {
+  const getCurrentPlayer = useCallback(async nickname => {
     const resp = await fetch('/api/getPlayer', {
       method: 'POST',
       body: JSON.stringify({
@@ -37,22 +37,23 @@ export default function App() {
       }
       setCurrentPlayer(player);
       setHighScore(player.data.high_score);
-    }
+    }, [])
     
     useEffect(() => {
       if (isAuthenticated) {
         getCurrentPlayer(user.nickname);
       }
-    }, [isAuthenticated])
+    }, [isAuthenticated, getCurrentPlayer])
 
   return (
-    <div>
+    <>
       <Leaderboard />
       <hr/>
-      {isAuthenticated &&
+      {isAuthenticated && (
         <p>{currentScore <= highScore 
           ? `Personal best: ${currentPlayer.data && currentPlayer.data.high_score}` 
-          : 'New personal best!'}</p>}
+          : 'New personal best!'}
+        </p>)}
       <span>{currentScore}</span>
       <button onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
@@ -60,6 +61,6 @@ export default function App() {
       {!isAuthenticated 
         ? <LoginButton /> 
         : <LogoutButton currentPlayer={currentPlayer} newScore={currentScore} />}
-    </div>
+    </>
   );
 }
