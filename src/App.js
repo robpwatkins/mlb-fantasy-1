@@ -5,10 +5,11 @@ import Leaderboard from './components/Leaderboard';
 import Profile from './components/Profile';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
+import PersonalBest from './components/PersonalBest';
 
 export default function App() {
   const [currentPlayer, setCurrentPlayer] = useState({});
-  const [highScore, setHighScore] = useState();
+  const [highScore, setHighScore] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
   const { user, isAuthenticated } = useAuth0();
 
@@ -21,7 +22,6 @@ export default function App() {
     })
     const player = await resp.json();
     setCurrentPlayer(player);
-    setHighScore(player.data.high_score);
   }
 
   const getCurrentPlayer = useCallback(async nickname => {
@@ -49,11 +49,12 @@ export default function App() {
     <>
       <Leaderboard />
       <hr/>
-      {isAuthenticated && (
-        <p>{currentScore <= highScore 
-          ? `Personal best: ${currentPlayer.data && currentPlayer.data.high_score}` 
-          : 'New personal best!'}
-        </p>)}
+      <PersonalBest
+        isAuthenticated={isAuthenticated}
+        highScore={highScore}
+        currentScore={currentScore}
+        currentPlayer={currentPlayer}
+      />
       <span>{currentScore}</span>
       <button onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
