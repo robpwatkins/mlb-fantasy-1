@@ -8,42 +8,33 @@ import LogoutButton from './components/LogoutButton';
 import PersonalBest from './components/PersonalBest';
 
 export default function App() {
-  const [currentPlayer, setCurrentPlayer] = useState({});
-  const [highScore, setHighScore] = useState(0);
-  const [currentScore, setCurrentScore] = useState(0);
+  const [currentUser, setCurrentUser] = useState({});
   const { user, isAuthenticated } = useAuth0();
 
-  const createNewPlayer = async nickname => {
-    const resp = await fetch('/api/createPlayer', {
+  const createNewUser = async (nickname) => {
+    const response = await fetch('/api/create_user', {
       method: 'POST',
-      body: JSON.stringify({
-        nickname,
-      })
-    })
-    const player = await resp.json();
-    setCurrentPlayer(player);
+      body: JSON.stringify({ nickname })
+    });
+    const user = await response.json();
+    setCurrentUser(user);
   }
 
-  const getCurrentPlayer = useCallback(async nickname => {
-    const resp = await fetch('/api/getPlayer', {
+  const getCurrentUser = useCallback(async (nickname) => {
+    const response = await fetch('/api/get_user', {
       method: 'POST',
       body: JSON.stringify({
           nickname
         })
       });
-      const [player] = await resp.json();
-      if (!player) {
-        return createNewPlayer(nickname);
-      }
-      setCurrentPlayer(player);
-      setHighScore(player.data.high_score);
+      const [user] = await response.json();
+      if (!user) return createNewUser(nickname);
+      setCurrentUser(user);
     }, [])
     
     useEffect(() => {
-      if (isAuthenticated) {
-        getCurrentPlayer(user.nickname);
-      }
-    }, [isAuthenticated, getCurrentPlayer])
+      if (isAuthenticated) getCurrentUser(user.nickname);
+    })
 
   return (
     <>
@@ -51,17 +42,13 @@ export default function App() {
       <hr/>
       <PersonalBest
         isAuthenticated={isAuthenticated}
-        highScore={highScore}
-        currentScore={currentScore}
-        currentPlayer={currentPlayer}
+        currentUser={currentUser}
       />
-      <span>{currentScore}</span>
-      <button onClick={() => setCurrentScore(currentScore + 1)}>+</button>
       <br/>
       <Profile />
       {!isAuthenticated 
         ? <LoginButton /> 
-        : <LogoutButton currentPlayer={currentPlayer} newScore={currentScore} />}
+        : <LogoutButton currentUser={currentUser} />}
     </>
   );
 }

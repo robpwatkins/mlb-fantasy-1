@@ -2,23 +2,15 @@ const faunadb = require('faunadb')
 
 const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET })
 
-const q = faunadb.query
+const { Create, Collection } = faunadb.query;
 
 const handler = async (event) => {
   try {
-    const { nickname, newScore } = JSON.parse(event.body);
+    const { nickname } = JSON.parse(event.body);
+    console.log('nickname: ', nickname);
     const req = await faunaClient.query(
-      q.Create(
-        q.Collection("players"),
-        {
-          data: {
-            nickname,
-            high_score: 0
-          }
-        }
-      )
-    )
-    console.log('heyoo', req);
+      Create(Collection('users'), { data: { nickname } })
+    );
     return {
       statusCode: 200,
       body: JSON.stringify(req),

@@ -5,12 +5,13 @@ const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECR
 const q = faunadb.query
 
 const handler = async (event) => {
+  console.log('getting . . .');
   try {
     const { nickname } = JSON.parse(event.body);
     const req = await faunaClient.query(
       q.Map(
         q.Paginate(
-          q.Match(q.Index("player_by_nickname"), nickname)
+          q.Match(q.Index("user_by_nickname"), nickname)
           ),
           q.Lambda("X", q.Get(q.Var("X")))))
     return { statusCode: 200, body: JSON.stringify(req.data) }
