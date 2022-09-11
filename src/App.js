@@ -30,11 +30,11 @@ export default function App() {
       const [user] = await response.json();
       if (!user) return createNewUser(nickname);
       setCurrentUser(user);
-    })
+    }, [])
     
     useEffect(() => {
       if (isAuthenticated) getCurrentUser(user.nickname);
-    })
+    }, [isAuthenticated, getCurrentUser, user])
 
   return (
     <>
