@@ -11,8 +11,10 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({});
   const { user, isAuthenticated } = useAuth0();
 
+  console.log('user: ', currentUser);
+
   const createNewUser = async (nickname) => {
-    const response = await fetch('/api/create_user', {
+    const response = await fetch('/api/create-user', {
       method: 'POST',
       body: JSON.stringify({ nickname })
     });
@@ -21,20 +23,18 @@ export default function App() {
   }
 
   const getCurrentUser = useCallback(async (nickname) => {
-    const response = await fetch('/api/get_user', {
+    const response = await fetch('/api/get-user', {
       method: 'POST',
-      body: JSON.stringify({
-          nickname
-        })
-      });
-      const [user] = await response.json();
-      if (!user) return createNewUser(nickname);
-      setCurrentUser(user);
-    }, [])
+      body: JSON.stringify({ nickname })
+    });
+    const [user] = await response.json();
+    if (!user) return createNewUser(nickname);
+    setCurrentUser(user);
+  }, [])
     
-    useEffect(() => {
-      if (isAuthenticated) getCurrentUser(user.nickname);
-    }, [isAuthenticated, getCurrentUser, user])
+  useEffect(() => {
+    if (isAuthenticated) getCurrentUser(user.nickname);
+  }, [isAuthenticated, getCurrentUser, user])
 
   return (
     <>

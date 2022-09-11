@@ -6,7 +6,7 @@ export default function LoginButton() {
 
   return (
     <>
-      <u onClick={loginWithRedirect}>Login</u><span> to join the leaderboard!</span>
+      <u onClick={loginWithRedirect}>Login</u><span> to manage your series!</span>
     </>
   );
 }
