@@ -5,7 +5,6 @@ const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECR
 const q = faunadb.query
 
 const handler = async (event) => {
-  console.log('heyoo');
   try {
     const { currentPlayer, newScore } = JSON.parse(event.body);
     const playerId = currentPlayer.ref['@ref'].id;

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import './App.css';
-import Leaderboard from './components/Leaderboard';
+// import Leaderboard from './components/Leaderboard';
 import Profile from './components/Profile';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
@@ -30,7 +30,7 @@ export default function App() {
       const [user] = await response.json();
       if (!user) return createNewUser(nickname);
       setCurrentUser(user);
-    }, [])
+    })
     
     useEffect(() => {
       if (isAuthenticated) getCurrentUser(user.nickname);
@@ -38,7 +38,7 @@ export default function App() {
 
   return (
     <>
-      <Leaderboard />
+      {/* <Leaderboard /> */}
       <hr/>
       <PersonalBest
         isAuthenticated={isAuthenticated}

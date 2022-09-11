@@ -1,13 +1,16 @@
 const faunadb = require('faunadb')
 
-const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET })
+const faunaClient = new faunadb.Client({
+  secret: process.env.FAUNADB_SECRET,
+  domain: 'db.us.fauna.com',
+  scheme: 'https'
+})
 
 const { Create, Collection } = faunadb.query;
 
 const handler = async (event) => {
   try {
     const { nickname } = JSON.parse(event.body);
-    console.log('nickname: ', nickname);
     const req = await faunaClient.query(
       Create(Collection('users'), { data: { nickname } })
     );

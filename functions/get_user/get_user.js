@@ -1,21 +1,26 @@
 const faunadb = require('faunadb')
 
-const faunaClient = new faunadb.Client({ secret: process.env.FAUNADB_SERVER_SECRET })
+const faunaClient = new faunadb.Client({
+  secret: process.env.FAUNADB_SECRET,
+  domain: 'db.us.fauna.com',
+  scheme: 'https'
+});
 
-const q = faunadb.query
+const { Map, Paginate, Match, Index, Lambda, Get, Var } = faunadb.query;
 
 const handler = async (event) => {
-  console.log('getting . . .');
   try {
     const { nickname } = JSON.parse(event.body);
     const req = await faunaClient.query(
-      q.Map(
-        q.Paginate(
-          q.Match(q.Index("user_by_nickname"), nickname)
-          ),
-          q.Lambda("X", q.Get(q.Var("X")))))
+      Map(
+        Paginate(Match(Index("users_by_nickname"), nickname)),
+        Lambda("X", Get(Var("X")))
+      )
+    );
+    console.log('req: ', req);
     return { statusCode: 200, body: JSON.stringify(req.data) }
   } catch (error) {
+    console.log('error: ', error.message);
     return { statusCode: 500, body: JSON.stringify({ error: error.message }) }
   }
 }
