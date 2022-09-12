@@ -9,9 +9,8 @@ import PersonalBest from './components/PersonalBest';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState({});
+  const [userTeams, setUserTeams] = useState([]);
   const { user, isAuthenticated } = useAuth0();
-
-  console.log('user: ', currentUser);
 
   const createNewUser = async (nickname) => {
     const response = await fetch('/api/create-user', {

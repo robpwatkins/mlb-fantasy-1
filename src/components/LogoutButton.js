@@ -19,5 +19,5 @@ export default function LogoutButton({ currentPlayer, newScore }) {
 
   const { logout } = useAuth0();
 
-  return <u onClick={handleClick}>quit and logout</u>;
+  return <u onClick={handleClick}>logout</u>;
 }
